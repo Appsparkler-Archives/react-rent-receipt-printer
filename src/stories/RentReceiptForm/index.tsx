@@ -1,4 +1,5 @@
 import React from "react";
+import { InputGroup } from "../elements/InputGroup";
 
 export interface IRentReceiptForm {
   onClickPrint: React.MouseEventHandler<HTMLButtonElement>;
@@ -13,27 +14,10 @@ export const RentReceiptForm = ({
     <div>
       <h3 className="text-center h3">Rent Receipt Printer</h3>
       <form>
-        <div className="input-group input-group-sm mb-3">
-          <span className="input-group-text" id="inputGroup-sizing-sm">
-            Your Name
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
-        </div>
-        <div className="input-group input-group-sm mb-3">
-          <span className="input-group-text" id="inputGroup-sizing-sm">
-            From
-          </span>
-          <input
-            type="date"
-            className="form-control"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
+        <InputGroup type="text" label="Tenant's Name" />
+
+        {/* From & To */}
+        <InputGroup type="date" label="From">
           <span className="input-group-text">To</span>
           <input
             type="date"
@@ -41,18 +25,10 @@ export const RentReceiptForm = ({
             aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-sm"
           />
-        </div>
-        <div className="input-group input-group-sm mb-3">
-          <span className="input-group-text" id="inputGroup-sizing-sm">
-            Amount
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="e.x. 23,000"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
+        </InputGroup>
+
+        {/* Amount & includes-maintenance-checkbox */}
+        <InputGroup type="text" label="Amount">
           <div className="form-check mx-2">
             <input
               className="form-check-input"
@@ -64,7 +40,8 @@ export const RentReceiptForm = ({
               Includes maintenance
             </label>
           </div>
-        </div>
+        </InputGroup>
+
         <div className="input-group input-group-sm mb-3">
           <span className="input-group-text">Address</span>
           <textarea
@@ -73,28 +50,9 @@ export const RentReceiptForm = ({
             rows={5}
           ></textarea>
         </div>
-        <div className="input-group input-group-sm mb-3">
-          <span className="input-group-text" id="inputGroup-sizing-sm">
-            Landlord's Name
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
-        </div>
-        <div className="input-group input-group-sm mb-3">
-          <span className="input-group-text" id="inputGroup-sizing-sm">
-            Landlord's PAN #
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-          />
-        </div>
+
+        <InputGroup type="text" label="Landlord's Name" />
+        <InputGroup type="text" label="Landlord's PAN #" />
         <div className="flex-row">
           <button
             type="button"

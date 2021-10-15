@@ -5,12 +5,13 @@ import {
   HTMLInputTypeAttribute,
   InputHTMLAttributes,
   useCallback,
+  ReactNode,
 } from "react";
 
 export interface IInputGroupProps {
   label: string;
-  value: string;
-  type: Exclude<
+  value?: string;
+  type?: Exclude<
     HTMLInputTypeAttribute,
     | "button"
     | "checkbox"
@@ -23,8 +24,9 @@ export interface IInputGroupProps {
     | "reset"
     | "submit"
   >;
-  onChange: (value: string) => void;
-  inputProps: DetailedHTMLProps<
+  children?: ReactNode;
+  onChange?: (value: string) => void;
+  inputProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
@@ -34,8 +36,9 @@ export const InputGroup = ({
   inputProps,
   label,
   type,
-  onChange,
   value,
+  children,
+  onChange,
 }: IInputGroupProps) => {
   const [{ $value }, setState] = useState({
     $value: value,
@@ -50,7 +53,7 @@ export const InputGroup = ({
   }, []);
 
   useEffect(() => {
-    if (typeof $value === "string") {
+    if (typeof $value === "string" && typeof onChange === "function") {
       onChange($value);
     }
   }, [$value, onChange]);
@@ -67,6 +70,7 @@ export const InputGroup = ({
         onChange={handleChange}
         {...inputProps}
       />
+      {children}
     </div>
   );
 };
