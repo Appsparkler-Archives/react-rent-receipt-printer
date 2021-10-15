@@ -14,6 +14,9 @@ export interface IRentReceiptProps {
   printOnly: boolean;
 }
 
+/**
+ * The rent receipt
+ */
 export const RentReceipt: React.FC<IRentReceiptProps> = ({
   amount,
   tenantName,
