@@ -1,5 +1,4 @@
 import {
-  ChangeEventHandler,
   DetailedHTMLProps,
   HTMLInputTypeAttribute,
   InputHTMLAttributes,

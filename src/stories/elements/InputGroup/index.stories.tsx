@@ -9,7 +9,7 @@ const Template: ComponentStory<typeof InputGroup> = (args) => (
 
 export const TextType = Template.bind({});
 TextType.args = {
-  label: "Tenants Name",
+  label: "Name",
   type: "text",
 } as IInputGroupProps;
 
