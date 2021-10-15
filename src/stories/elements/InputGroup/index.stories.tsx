@@ -21,8 +21,27 @@ DateType.args = {
 
 export const TimeType = Template.bind({});
 TimeType.args = {
-  label: "From",
+  label: "Arrival Time",
   type: "time",
+} as IInputGroupProps;
+
+export const EmailType = Template.bind({});
+EmailType.args = {
+  label: "Email Address",
+  type: "email",
+} as IInputGroupProps;
+
+export const DateTimeType = Template.bind({});
+DateTimeType.args = {
+  label: "Pick Color",
+  type: "datetime-local",
+} as IInputGroupProps;
+
+export const NumberType = Template.bind({});
+NumberType.args = {
+  label: "Age",
+  type: "number",
+  value: "10",
 } as IInputGroupProps;
 
 export default {

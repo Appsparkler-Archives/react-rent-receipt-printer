@@ -1,4 +1,6 @@
 import {
+  useState,
+  useEffect,
   DetailedHTMLProps,
   HTMLInputTypeAttribute,
   InputHTMLAttributes,
@@ -7,7 +9,11 @@ import {
 
 export interface IInputGroupProps {
   label: string;
-  type: HTMLInputTypeAttribute;
+  value: string;
+  type: Exclude<
+    HTMLInputTypeAttribute,
+    "button" | "checkbox" | "color" | "file" | "hidden" | "image"
+  >;
   onChange: (value: string) => void;
   inputProps: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
@@ -20,15 +26,24 @@ export const InputGroup = ({
   label,
   type,
   onChange,
+  value,
 }: IInputGroupProps) => {
-  const handleChange = useCallback(
-    ({ target: { value } }) => {
-      if (typeof value === "string") {
-        onChange(value);
-      }
-    },
-    [onChange]
-  );
+  const [{ $value }, setState] = useState({
+    $value: value,
+  });
+  const handleChange = useCallback(({ target: { value } }) => {
+    if (typeof value === "string") {
+      setState((prevState) => ({
+        ...prevState,
+        $value: value,
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    onChange($value);
+  }, [$value, onChange]);
+
   return (
     <div className="input-group input-group-sm mb-3">
       <span className="input-group-text" id="inputGroup-sizing-sm">
@@ -37,6 +52,7 @@ export const InputGroup = ({
       <input
         type={type}
         className="form-control"
+        value={$value}
         onChange={handleChange}
         {...inputProps}
       />
