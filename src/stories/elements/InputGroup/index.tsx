@@ -12,7 +12,16 @@ export interface IInputGroupProps {
   value: string;
   type: Exclude<
     HTMLInputTypeAttribute,
-    "button" | "checkbox" | "color" | "file" | "hidden" | "image"
+    | "button"
+    | "checkbox"
+    | "radio"
+    | "color"
+    | "file"
+    | "hidden"
+    | "image"
+    | "range"
+    | "reset"
+    | "submit"
   >;
   onChange: (value: string) => void;
   inputProps: DetailedHTMLProps<
@@ -41,7 +50,9 @@ export const InputGroup = ({
   }, []);
 
   useEffect(() => {
-    onChange($value);
+    if (typeof $value === "string") {
+      onChange($value);
+    }
   }, [$value, onChange]);
 
   return (

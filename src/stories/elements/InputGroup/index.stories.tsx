@@ -44,6 +44,42 @@ NumberType.args = {
   value: "10",
 } as IInputGroupProps;
 
+export const PasswordType = Template.bind({});
+PasswordType.args = {
+  label: "Password",
+  type: "password",
+} as IInputGroupProps;
+
+export const WeekType = Template.bind({});
+WeekType.args = {
+  label: "Week",
+  type: "week",
+} as IInputGroupProps;
+
+export const MonthType = Template.bind({});
+MonthType.args = {
+  label: "Month",
+  type: "month",
+} as IInputGroupProps;
+
+export const TelType = Template.bind({});
+TelType.args = {
+  label: "Tel #",
+  type: "tel",
+} as IInputGroupProps;
+
+export const SearchType = Template.bind({});
+SearchType.args = {
+  label: "Search",
+  type: "search",
+} as IInputGroupProps;
+
+export const UrlType = Template.bind({});
+UrlType.args = {
+  label: "URL",
+  type: "url",
+} as IInputGroupProps;
+
 export default {
   title: "Elements/Input Group",
   component: InputGroup,
