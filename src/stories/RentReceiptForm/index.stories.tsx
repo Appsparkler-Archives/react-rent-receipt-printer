@@ -1,41 +1,32 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { Button } from "./index";
-
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-export default {
-  title: "My/Button",
-  component: Button,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
-} as ComponentMeta<typeof Button>;
+import { IRentReceiptProps, RentReceipt } from "./index";
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof RentReceipt> = (args) => (
+  <RentReceipt {...args} />
+);
 
-export const Primary = Template.bind({});
+export const WithAllProps = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
-  primary: true,
-  label: "Button",
-};
+WithAllProps.args = {
+  amount: "16,000",
+  fromDt: "01-Oct-2021",
+  toDt: "31-Oct-2021",
+  landlordName: "Prakash Mishra",
+  panNo: "IEOSQ4383U",
+  tenantName: "Raman Agnihotri",
+  address: `
+    202 Paradise Enclave,
+    Beach Road,
+    Princeton
+    California, America - 20039
+   `,
+  printOnly: false,
+} as IRentReceiptProps;
 
-export const Secondary = Template.bind({});
-Secondary.args = {
-  label: "Button",
-};
-
-export const Large = Template.bind({});
-Large.args = {
-  size: "large",
-  label: "Button",
-};
-
-export const Small = Template.bind({});
-Small.args = {
-  size: "small",
-  label: "Button",
-};
+export default {
+  title: "Compounds/Rent Receipt",
+  component: RentReceipt,
+} as ComponentMeta<typeof RentReceipt>;
