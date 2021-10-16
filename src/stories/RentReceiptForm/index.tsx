@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { InputGroup } from "../elements/InputGroup";
+import { DoubleInputGroup, InputGroup } from "../elements/InputGroup";
 
 export interface ReceiptFormData {
   tenantName: string;
@@ -72,23 +72,17 @@ export const RentReceiptForm = ({
         />
 
         {/* From & To */}
-        <InputGroup
-          type="date"
-          label="From"
-          name="fromDate"
-          value={fromDate}
+        <DoubleInputGroup
+          type1="date"
+          label1="From"
+          name1="fromDate"
+          value1={fromDate}
+          label2="To"
+          type2="date"
+          name2="toDate"
+          value2={toDate}
           onChange={handleChange}
-        >
-          <span className="input-group-text">To</span>
-          <input
-            type="date"
-            className="form-control"
-            name="toDate"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-sm"
-            value={toDate}
-          />
-        </InputGroup>
+        />
 
         {/* Amount & includes-maintenance-checkbox */}
         <InputGroup type="text" label="Amount" value={rentAmount}>
