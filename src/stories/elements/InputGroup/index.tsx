@@ -255,10 +255,10 @@ export const InputGroupWithCheckbox = ({
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (evt) => {
       const {
-        target: { value },
+        target: { checked },
       } = evt;
       if (typeof onChange === "function") {
-        onChange(value, evt);
+        onChange(checked, evt);
       }
     },
     [onChange]
