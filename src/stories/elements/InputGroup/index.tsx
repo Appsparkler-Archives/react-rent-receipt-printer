@@ -27,19 +27,7 @@ export type AllowedInputTypes = Exclude<
 export interface IInputGroupProps {
   label: string;
   value?: string;
-  type?: Exclude<
-    HTMLInputTypeAttribute,
-    | "button"
-    | "checkbox"
-    | "radio"
-    | "color"
-    | "file"
-    | "hidden"
-    | "image"
-    | "range"
-    | "reset"
-    | "submit"
-  >;
+  type?: AllowedInputTypes;
   children?: ReactNode;
   onChange?: (value: string, evt?: ChangeEvent<HTMLInputElement>) => void;
   name?: string;
