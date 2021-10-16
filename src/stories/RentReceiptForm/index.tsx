@@ -1,40 +1,104 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { InputGroup } from "../elements/InputGroup";
 
+export interface ReceiptFormData {
+  tenantName: string;
+  fromDate: string;
+  toDate: string;
+  rentAmount: string;
+  includesMaintenance: boolean;
+  address: string;
+  landlordName: string;
+  landlordPan: string;
+}
+
 export interface IRentReceiptForm {
-  onClickPrint: React.MouseEventHandler<HTMLButtonElement>;
+  onClickPrint: (formData: ReceiptFormData) => void;
   onClickShare: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const RentReceiptForm = ({
-  onClickPrint: handleClickPrint,
+  onClickPrint,
   onClickShare: handleClickShare,
 }: IRentReceiptForm) => {
+  const [state, setState] = useState<ReceiptFormData>({
+    tenantName: "",
+    fromDate: "",
+    toDate: "",
+    rentAmount: "",
+    includesMaintenance: false,
+    address: "",
+    landlordName: "",
+    landlordPan: "",
+  });
+
+  const {
+    tenantName,
+    fromDate,
+    toDate,
+    rentAmount,
+    includesMaintenance,
+    address,
+    landlordName,
+    landlordPan,
+  } = state;
+
+  const handleChange = useCallback(
+    (value: string, evt?: React.ChangeEvent<HTMLInputElement> | undefined) => {
+      const { name } = evt?.target || {};
+      if (name) {
+        setState((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+    },
+    []
+  );
+
+  const handleClickPrint = useCallback(() => {
+    onClickPrint(state);
+  }, [onClickPrint, state]);
   return (
     <div>
       <h3 className="text-center h3">Rent Receipt Printer</h3>
       <form>
-        <InputGroup type="text" label="Tenant's Name" />
+        <InputGroup
+          type="text"
+          label="Tenant's Name"
+          name="tenantName"
+          value={tenantName}
+          onChange={handleChange}
+        />
 
         {/* From & To */}
-        <InputGroup type="date" label="From">
+        <InputGroup
+          type="date"
+          label="From"
+          name="fromDate"
+          value={fromDate}
+          onChange={handleChange}
+        >
           <span className="input-group-text">To</span>
           <input
             type="date"
             className="form-control"
+            name="toDate"
             aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-sm"
+            value={toDate}
           />
         </InputGroup>
 
         {/* Amount & includes-maintenance-checkbox */}
-        <InputGroup type="text" label="Amount">
+        <InputGroup type="text" label="Amount" value={rentAmount}>
           <div className="form-check mx-2">
             <input
               className="form-check-input"
               type="checkbox"
               value=""
               id="flexCheckDefault"
+              checked={includesMaintenance}
             />
             <label className="form-check-label" htmlFor="flexCheckDefault">
               Includes maintenance
@@ -48,11 +112,12 @@ export const RentReceiptForm = ({
             className="form-control"
             aria-label="With textarea"
             rows={5}
+            value={address}
           ></textarea>
         </div>
 
-        <InputGroup type="text" label="Landlord's Name" />
-        <InputGroup type="text" label="Landlord's PAN #" />
+        <InputGroup type="text" label="Landlord's Name" value={landlordName} />
+        <InputGroup type="text" label="Landlord's PAN #" value={landlordPan} />
         <div className="flex-row">
           <button
             type="button"

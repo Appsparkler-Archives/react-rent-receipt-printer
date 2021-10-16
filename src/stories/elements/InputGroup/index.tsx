@@ -6,6 +6,8 @@ import {
   InputHTMLAttributes,
   useCallback,
   ReactNode,
+  ChangeEventHandler,
+  ChangeEvent,
 } from "react";
 
 export interface IInputGroupProps {
@@ -25,7 +27,8 @@ export interface IInputGroupProps {
     | "submit"
   >;
   children?: ReactNode;
-  onChange?: (value: string) => void;
+  onChange?: (value: string, evt?: ChangeEvent<HTMLInputElement>) => void;
+  name?: string;
   inputProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -36,27 +39,39 @@ export const InputGroup = ({
   inputProps,
   label,
   type,
+  name,
   value,
   children,
   onChange,
 }: IInputGroupProps) => {
-  const [{ $value }, setState] = useState({
+  const [{ $value, $evt }, setState] = useState<{
+    $value?: string;
+    $evt?: ChangeEvent<HTMLInputElement>;
+  }>({
     $value: value,
+    $evt: undefined,
   });
-  const handleChange = useCallback(({ target: { value } }) => {
-    if (typeof value === "string") {
-      setState((prevState) => ({
-        ...prevState,
-        $value: value,
-      }));
-    }
-  }, []);
+  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (evt) => {
+      const {
+        target: { value },
+      } = evt;
+      if (typeof value === "string") {
+        setState((prevState) => ({
+          ...prevState,
+          $value: value,
+          $evt: evt,
+        }));
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     if (typeof $value === "string" && typeof onChange === "function") {
-      onChange($value);
+      onChange($value, $evt);
     }
-  }, [$value, onChange]);
+  }, [$value, onChange, $evt]);
 
   return (
     <div className="input-group input-group-sm mb-3">
@@ -65,6 +80,7 @@ export const InputGroup = ({
       </span>
       <input
         type={type}
+        name={name}
         className="form-control"
         value={$value}
         onChange={handleChange}
