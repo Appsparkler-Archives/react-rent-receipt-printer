@@ -10,6 +10,20 @@ import {
   ChangeEvent,
 } from "react";
 
+export type AllowedInputTypes = Exclude<
+  HTMLInputTypeAttribute,
+  | "button"
+  | "checkbox"
+  | "radio"
+  | "color"
+  | "file"
+  | "hidden"
+  | "image"
+  | "range"
+  | "reset"
+  | "submit"
+>;
+
 export interface IInputGroupProps {
   label: string;
   value?: string;
@@ -94,19 +108,7 @@ export const InputGroup = ({
 export interface IDoubleInputGroupProps {
   label1: string;
   value1?: string;
-  type1?: Exclude<
-    HTMLInputTypeAttribute,
-    | "button"
-    | "checkbox"
-    | "radio"
-    | "color"
-    | "file"
-    | "hidden"
-    | "image"
-    | "range"
-    | "reset"
-    | "submit"
-  >;
+  type1?: AllowedInputTypes;
   onChange?: (value: string, evt?: ChangeEvent<HTMLInputElement>) => void;
   name1?: string;
   inputProps1?: DetailedHTMLProps<
@@ -115,20 +117,7 @@ export interface IDoubleInputGroupProps {
   >;
   label2: string;
   value2?: string;
-  type2?: Exclude<
-    HTMLInputTypeAttribute,
-    | "button"
-    | "checkbox"
-    | "radio"
-    | "color"
-    | "file"
-    | "hidden"
-    | "image"
-    | "range"
-    | "reset"
-    | "submit"
-  >;
-  onChange2?: (value: string, evt?: ChangeEvent<HTMLInputElement>) => void;
+  type2?: AllowedInputTypes;
   name2?: string;
   inputProps2?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
@@ -148,7 +137,6 @@ export const DoubleInputGroup = ({
   type2,
   name2,
   value2,
-  onChange2,
 }: IDoubleInputGroupProps) => {
   const [{ $value1, $value2, $value, $evt }, setState] = useState<{
     $value1?: string;
@@ -229,5 +217,73 @@ export const DoubleInputGroup = ({
         {...inputProps2}
       />
     </div>
+  );
+};
+
+export interface IInputGroupWithCheckbox {
+  // Input
+  checkboxLabel?: string;
+  inputValue?: string;
+  inputLabel: string;
+  inputProps?: DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >;
+  // Checkbox
+  checkboxName?: string;
+  checkboxValue?: boolean;
+  checkboxProps?: DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >;
+  onChange?: (
+    value: string | boolean,
+    evt?: ChangeEvent<HTMLInputElement>
+  ) => void;
+}
+
+export const InputGroupWithCheckbox = ({
+  checkboxLabel,
+  checkboxValue,
+  checkboxName,
+  inputValue,
+  inputLabel,
+  inputProps,
+  checkboxProps,
+  onChange,
+}: IInputGroupWithCheckbox) => {
+  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (evt) => {
+      const {
+        target: { value },
+      } = evt;
+      if (typeof onChange === "function") {
+        onChange(value, evt);
+      }
+    },
+    [onChange]
+  );
+  return (
+    <InputGroup
+      type="text"
+      label={inputLabel}
+      value={inputValue}
+      onChange={onChange}
+      inputProps={inputProps}
+    >
+      <div className="form-check mx-2">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          name={checkboxName}
+          checked={checkboxValue}
+          onChange={handleChange}
+          {...checkboxProps}
+        />
+        <label className="form-check-label" htmlFor="flexCheckDefault">
+          {checkboxLabel}
+        </label>
+      </div>
+    </InputGroup>
   );
 };
