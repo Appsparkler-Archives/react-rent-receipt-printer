@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { SVGIcon } from "../atoms/Icon";
 import {
   DoubleInputGroup,
@@ -155,7 +155,7 @@ export const RentReceiptFormWithValidation = ({
   onClickShare,
 }: IRentReceiptForm) => {
   const [{ validationMessages }, setState] = useState<{
-    validationMessages: string[];
+    validationMessages: ReactNode[];
   }>({
     validationMessages: [],
   });
@@ -178,8 +178,8 @@ export const RentReceiptFormWithValidation = ({
           className="alert alert-warning alert-dismissible fade show my-2"
           role="alert"
         >
-          {validationMessages.map((validationMessage) => (
-            <p className="p-0 m-0" key={validationMessage}>
+          {validationMessages.map((validationMessage, idx) => (
+            <p className="p-0 m-0" key={`validaiton-messages-${idx}`}>
               {validationMessage}
             </p>
           ))}
@@ -195,10 +195,46 @@ export const RentReceiptFormWithValidation = ({
   );
 };
 
-const validateFormData = ({ tenantName }: ReceiptFormData): string[] => {
-  const tenantNameIsRequiredError = Boolean(tenantName)
-    ? []
-    : ["Tenant's name is required"];
-  const errors = [...tenantNameIsRequiredError];
+const RequiredValidationMessage = ({ label }: { label: string }) => (
+  <>
+    <strong>{label}</strong> is required
+  </>
+);
+
+const validateFormData = ({
+  tenantName,
+  rentAmount,
+  address,
+  landlordName,
+  landlordPan,
+  fromDate,
+  toDate,
+}: ReceiptFormData): ReactNode[] => {
+  const toBeforeFromError =
+    Boolean(fromDate) &&
+    Boolean(toDate) &&
+    new Date(fromDate) > new Date(toDate)
+      ? [
+          <>
+            <strong>From Date</strong> should be before <strong>To date</strong>
+          </>,
+        ]
+      : [];
+
+  const isRequiredErrors = [
+    { label: "Address", field: address },
+    { label: "Rent Amount", field: rentAmount },
+    { label: "Tenant's Name", field: tenantName },
+    { label: "From Date", field: tenantName },
+    { label: "To Date", field: tenantName },
+    { label: "Landlord's Name", field: landlordName },
+    { label: "Landlord's PAN#", field: landlordPan },
+  ].map(({ label, field }) =>
+    Boolean(field)
+      ? []
+      : [<RequiredValidationMessage key={label} label={label} />]
+  );
+
+  const errors = [...toBeforeFromError, ...isRequiredErrors];
   return errors;
 };
