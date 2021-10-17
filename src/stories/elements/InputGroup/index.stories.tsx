@@ -33,7 +33,7 @@ EmailType.args = {
 
 export const DateTimeType = Template.bind({});
 DateTimeType.args = {
-  label: "Pick Color",
+  label: "Date & Time",
   type: "datetime-local",
 } as IInputGroupProps;
 

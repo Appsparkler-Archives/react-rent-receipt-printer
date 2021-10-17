@@ -6,8 +6,8 @@ const Template: ComponentStory<typeof TextAreaGroup> = (args) => (
   <TextAreaGroup {...args} />
 );
 
-export const TextType = Template.bind({});
-TextType.args = {
+export const Example = Template.bind({});
+Example.args = {
   label: "Address",
   name: "address",
   rows: 5,
