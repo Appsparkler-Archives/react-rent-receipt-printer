@@ -233,18 +233,18 @@ export const DoubleInputGroup = ({
 };
 
 export interface IInputGroupWithSelect {
-  label1: string;
-  value1?: string;
-  type1?: AllowedInputTypes;
-  name1?: string;
-  inputProps1?: DetailedHTMLProps<
+  inputLabel: string;
+  inputValue?: string;
+  inputType?: AllowedInputTypes;
+  inputName?: string;
+  inputProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
 
-  label2: string;
-  value2?: string;
-  name2?: string;
+  selectLabel: string;
+  selectValue?: string;
+  selectName?: string;
   selectProps?: DetailedHTMLProps<
     SelectHTMLAttributes<HTMLSelectElement>,
     HTMLSelectElement
@@ -254,15 +254,15 @@ export interface IInputGroupWithSelect {
 }
 
 export const InputGroupWithSelect = ({
-  inputProps1,
-  label1,
-  type1,
-  name1,
-  value1,
+  inputProps,
+  inputLabel,
+  inputType,
+  inputName,
+  inputValue,
   selectProps,
-  label2,
-  name2,
-  value2,
+  selectLabel,
+  selectName,
+  selectValue,
   onChange,
 }: IInputGroupWithSelect) => {
   const [
@@ -277,13 +277,13 @@ export const InputGroupWithSelect = ({
     $name: string;
     $evt?: ChangeEvent<HTMLInputElement>;
   }>({
-    $value1: value1,
-    $value2: value2,
+    $value1: inputValue,
+    $value2: selectValue,
     $value: "",
     $evt: undefined,
     $name: "",
-    $name1: name1,
-    $name2: name2,
+    $name1: inputName,
+    $name2: selectName,
   });
 
   const handleChange1 = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -334,19 +334,19 @@ export const InputGroupWithSelect = ({
     <div className="input-group input-group-sm mb-3">
       {/* INPUT 1 */}
       <span className="input-group-text" id="inputGroup-sizing-sm">
-        {label1}
+        {inputLabel}
       </span>
       <input
-        type={type1}
+        type={inputType}
         name={$name1}
         className="form-control"
         value={$value1}
         onChange={handleChange1}
-        {...inputProps1}
+        {...inputProps}
       />
       {/* INPUT 2 */}
       <span className="input-group-text" id="inputGroup-sizing-sm">
-        {label2}
+        {selectLabel}
       </span>
       <select
         name={$name2}
