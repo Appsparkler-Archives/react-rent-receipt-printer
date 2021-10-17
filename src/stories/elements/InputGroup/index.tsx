@@ -210,9 +210,10 @@ export const DoubleInputGroup = ({
 
 export interface IInputGroupWithCheckbox {
   // Input
+  inputLabel: string;
   checkboxLabel?: string;
   inputValue?: string;
-  inputLabel: string;
+  inputName?: string;
   inputProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -234,6 +235,7 @@ export const InputGroupWithCheckbox = ({
   checkboxLabel,
   checkboxValue,
   checkboxName,
+  inputName,
   inputValue,
   inputLabel,
   inputProps,
@@ -254,6 +256,7 @@ export const InputGroupWithCheckbox = ({
   return (
     <InputGroup
       type="text"
+      name={inputName}
       label={inputLabel}
       value={inputValue}
       onChange={onChange}

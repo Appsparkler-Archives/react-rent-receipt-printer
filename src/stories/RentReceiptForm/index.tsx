@@ -1,5 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { DoubleInputGroup, InputGroup } from "../elements/InputGroup";
+import {
+  DoubleInputGroup,
+  InputGroup,
+  InputGroupWithCheckbox,
+} from "../elements/InputGroup";
 
 export interface ReceiptFormData {
   tenantName: string;
@@ -44,7 +48,10 @@ export const RentReceiptForm = ({
   } = state;
 
   const handleChange = useCallback(
-    (value: string, evt?: React.ChangeEvent<HTMLInputElement> | undefined) => {
+    (
+      value: string | boolean,
+      evt?: React.ChangeEvent<HTMLInputElement> | undefined
+    ) => {
       const { name } = evt?.target || {};
       if (name) {
         setState((prevState) => ({
@@ -85,20 +92,15 @@ export const RentReceiptForm = ({
         />
 
         {/* Amount & includes-maintenance-checkbox */}
-        <InputGroup type="text" label="Amount" value={rentAmount}>
-          <div className="form-check mx-2">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-              checked={includesMaintenance}
-            />
-            <label className="form-check-label" htmlFor="flexCheckDefault">
-              Includes maintenance
-            </label>
-          </div>
-        </InputGroup>
+        <InputGroupWithCheckbox
+          inputLabel="Amount"
+          inputName="rentAmount"
+          inputValue={rentAmount}
+          checkboxLabel="Includes Maintenance"
+          checkboxName="includesMaintenance"
+          checkboxValue={includesMaintenance}
+          onChange={handleChange}
+        />
 
         <div className="input-group input-group-sm mb-3">
           <span className="input-group-text">Address</span>
@@ -110,8 +112,20 @@ export const RentReceiptForm = ({
           ></textarea>
         </div>
 
-        <InputGroup type="text" label="Landlord's Name" value={landlordName} />
-        <InputGroup type="text" label="Landlord's PAN #" value={landlordPan} />
+        <InputGroup
+          type="text"
+          label="Landlord's Name"
+          name="landlordName"
+          value={landlordName}
+          onChange={handleChange}
+        />
+        <InputGroup
+          type="text"
+          label="Landlord's PAN #"
+          name="landlordPan"
+          value={landlordPan}
+          onChange={handleChange}
+        />
         <div className="flex-row">
           <button
             type="button"
