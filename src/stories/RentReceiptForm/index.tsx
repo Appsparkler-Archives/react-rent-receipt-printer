@@ -68,20 +68,28 @@ export const RentReceiptForm = ({
     []
   );
 
-  const handleClickPrint = useCallback(() => {
-    onClickPrint(state);
-  }, [onClickPrint, state]);
+  const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
+    (evt) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+      onClickPrint(state);
+    },
+    [onClickPrint, state]
+  );
 
   return (
     <div>
       <h3 className="text-center h3">Rent Receipt Printer</h3>
-      <form>
+      <form noValidate onSubmit={handleSubmit}>
         <InputGroup
           type="text"
           label="Tenant's Name"
           name="tenantName"
           value={tenantName}
           onChange={handleChange}
+          inputProps={{
+            required: true,
+          }}
         />
 
         {/* From & To */}
@@ -131,9 +139,8 @@ export const RentReceiptForm = ({
         />
         <div className="flex-row">
           <button
-            type="button"
+            type="submit"
             className="btn btn-primary rounded-0 d-print-none d-inline-flex"
-            onClick={handleClickPrint}
           >
             <SVGIcon type="printer-fill" />
           </button>
