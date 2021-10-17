@@ -1,4 +1,4 @@
-import map from "lodash/fp/map";
+import { map } from "../../logic/lodash";
 import {
   useState,
   useEffect,
@@ -232,6 +232,8 @@ export const DoubleInputGroup = ({
   );
 };
 
+export type OptionType = { label: string | number; value: string | number };
+
 export interface IInputGroupWithSelect {
   inputLabel: string;
   inputValue?: string;
@@ -249,6 +251,7 @@ export interface IInputGroupWithSelect {
     SelectHTMLAttributes<HTMLSelectElement>,
     HTMLSelectElement
   >;
+  options: OptionType[];
 
   onChange?: CustomChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
 }
@@ -263,6 +266,7 @@ export const InputGroupWithSelect = ({
   selectLabel,
   selectName,
   selectValue,
+  options = [],
   onChange,
 }: IInputGroupWithSelect) => {
   const [
@@ -355,16 +359,13 @@ export const InputGroupWithSelect = ({
         onChange={handleChange2}
         {...selectProps}
       >
-        {map<{ label: string; value: string }, ReactNode>(
+        {map<OptionType, ReactNode>(
           ({ label, value }) => (
             <option key={value} value={value}>
               {label}
             </option>
           ),
-          [
-            { label: "1", value: "1" },
-            { label: "2", value: "2" },
-          ]
+          options
         )}
       </select>
     </div>
