@@ -106,17 +106,12 @@ export const RentReceiptForm = ({
           onChange={handleChange}
         />
 
-        <TextAreaGroup label="Address" name="address" onChange={handleChange} />
-
-        <div className="input-group input-group-sm mb-3">
-          <span className="input-group-text">Address</span>
-          <textarea
-            className="form-control"
-            aria-label="With textarea"
-            rows={5}
-            value={address}
-          ></textarea>
-        </div>
+        <TextAreaGroup
+          label="Address"
+          name="address"
+          onChange={handleChange}
+          value={address}
+        />
 
         <InputGroup
           type="text"

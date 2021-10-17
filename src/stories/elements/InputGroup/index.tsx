@@ -10,7 +10,6 @@ import {
   ChangeEvent,
   TextareaHTMLAttributes,
 } from "react";
-import { isString } from "util";
 
 export type AllowedInputTypes = Exclude<
   HTMLInputTypeAttribute,
@@ -26,21 +25,23 @@ export type AllowedInputTypes = Exclude<
   | "submit"
 >;
 
+export type CustomChangeEventHandler<HTMLElement = HTMLInputElement> = (
+  name: string,
+  value: string | boolean,
+  evt?: ChangeEvent<HTMLElement>
+) => void;
+
 export interface IInputGroupProps {
   label: string;
   value?: string;
   type?: AllowedInputTypes;
   children?: ReactNode;
-  onChange?: (
-    name: string,
-    value: string,
-    evt?: ChangeEvent<HTMLInputElement>
-  ) => void;
   name: string;
   inputProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
+  onChange?: CustomChangeEventHandler;
 }
 
 export const InputGroup = ({
@@ -103,16 +104,12 @@ export interface IDoubleInputGroupProps {
   label1: string;
   value1?: string;
   type1?: AllowedInputTypes;
-  onChange?: (
-    name: string,
-    value: string,
-    evt?: ChangeEvent<HTMLInputElement>
-  ) => void;
   name1?: string;
   inputProps1?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
+
   label2: string;
   value2?: string;
   type2?: AllowedInputTypes;
@@ -121,6 +118,8 @@ export interface IDoubleInputGroupProps {
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
+
+  onChange?: CustomChangeEventHandler;
 }
 
 export const DoubleInputGroup = ({
@@ -209,7 +208,7 @@ export const DoubleInputGroup = ({
       </span>
       <input
         type={type1}
-        name={name1}
+        name={$name1}
         className="form-control"
         value={$value1}
         onChange={handleChange1}
@@ -221,7 +220,7 @@ export const DoubleInputGroup = ({
       </span>
       <input
         type={type2}
-        name={name2}
+        name={$name2}
         className="form-control"
         value={$value2}
         onChange={handleChange2}
@@ -248,11 +247,7 @@ export interface IInputGroupWithCheckbox {
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
-  onChange?: (
-    name: string,
-    value: string | boolean,
-    evt?: ChangeEvent<HTMLInputElement>
-  ) => void;
+  onChange?: CustomChangeEventHandler;
 }
 
 export const InputGroupWithCheckbox = ({
@@ -312,11 +307,7 @@ export interface ITextareaGroupProps {
   >;
   rows?: number;
   value?: string;
-  onChange?: (
-    name: string,
-    value: string,
-    evt?: ChangeEvent<HTMLTextAreaElement>
-  ) => void;
+  onChange?: CustomChangeEventHandler<HTMLTextAreaElement>;
 }
 
 export const TextAreaGroup = ({
