@@ -3,6 +3,7 @@ import {
   DoubleInputGroup,
   InputGroup,
   InputGroupWithCheckbox,
+  TextAreaGroup,
 } from "../elements/InputGroup";
 
 export interface ReceiptFormData {
@@ -49,10 +50,13 @@ export const RentReceiptForm = ({
 
   const handleChange = useCallback(
     (
+      name: string,
       value: string | boolean,
-      evt?: React.ChangeEvent<HTMLInputElement> | undefined
+      evt?:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+        | undefined
     ) => {
-      const { name } = evt?.target || {};
       if (name) {
         setState((prevState) => ({
           ...prevState,
@@ -101,6 +105,8 @@ export const RentReceiptForm = ({
           checkboxValue={includesMaintenance}
           onChange={handleChange}
         />
+
+        <TextAreaGroup label="Address" name="address" onChange={handleChange} />
 
         <div className="input-group input-group-sm mb-3">
           <span className="input-group-text">Address</span>

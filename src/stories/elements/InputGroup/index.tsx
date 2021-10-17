@@ -10,6 +10,7 @@ import {
   ChangeEvent,
   TextareaHTMLAttributes,
 } from "react";
+import { isString } from "util";
 
 export type AllowedInputTypes = Exclude<
   HTMLInputTypeAttribute,
@@ -30,8 +31,12 @@ export interface IInputGroupProps {
   value?: string;
   type?: AllowedInputTypes;
   children?: ReactNode;
-  onChange?: (value: string, evt?: ChangeEvent<HTMLInputElement>) => void;
-  name?: string;
+  onChange?: (
+    name: string,
+    value: string,
+    evt?: ChangeEvent<HTMLInputElement>
+  ) => void;
+  name: string;
   inputProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -72,9 +77,9 @@ export const InputGroup = ({
 
   useEffect(() => {
     if (typeof $value === "string" && typeof onChange === "function") {
-      onChange($value, $evt);
+      onChange(name, $value, $evt);
     }
-  }, [$value, onChange, $evt]);
+  }, [$value, onChange, $evt, name]);
 
   return (
     <div className="input-group input-group-sm mb-3">
@@ -98,7 +103,11 @@ export interface IDoubleInputGroupProps {
   label1: string;
   value1?: string;
   type1?: AllowedInputTypes;
-  onChange?: (value: string, evt?: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (
+    name: string,
+    value: string,
+    evt?: ChangeEvent<HTMLInputElement>
+  ) => void;
   name1?: string;
   inputProps1?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
@@ -120,35 +129,46 @@ export const DoubleInputGroup = ({
   type1,
   name1,
   value1,
-  onChange,
   inputProps2,
   label2,
   type2,
   name2,
   value2,
+  onChange,
 }: IDoubleInputGroupProps) => {
-  const [{ $value1, $value2, $value, $evt }, setState] = useState<{
+  const [
+    { $value1, $value2, $value, $evt, $name, $name1, $name2 },
+    setState,
+  ] = useState<{
     $value1?: string;
     $value2?: string;
-    $value?: string;
+    $value: string;
+    $name1?: string;
+    $name2?: string;
+    $name: string;
     $evt?: ChangeEvent<HTMLInputElement>;
   }>({
     $value1: value1,
     $value2: value2,
-    $value: undefined,
+    $value: "",
     $evt: undefined,
+    $name: "",
+    $name1: name1,
+    $name2: name2,
   });
 
   const handleChange1 = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (evt) => {
       const {
-        target: { value },
+        target: { value, name },
       } = evt;
       if (typeof value === "string") {
         setState((prevState) => ({
           ...prevState,
           $value1: value,
           $value: value,
+          $name1: name,
+          $name: name,
           $evt: evt,
         }));
       }
@@ -159,13 +179,15 @@ export const DoubleInputGroup = ({
   const handleChange2 = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (evt) => {
       const {
-        target: { value },
+        target: { value, name },
       } = evt;
       if (typeof value === "string") {
         setState((prevState) => ({
           ...prevState,
           $value2: value,
           $value: value,
+          $name2: name,
+          $name: name,
           $evt: evt,
         }));
       }
@@ -174,10 +196,10 @@ export const DoubleInputGroup = ({
   );
 
   useEffect(() => {
-    if (typeof $value === "string" && typeof onChange === "function") {
-      onChange($value, $evt);
+    if (Boolean($value) && typeof onChange === "function" && Boolean($name)) {
+      onChange($name, $value, $evt);
     }
-  }, [$value, onChange, $evt]);
+  }, [$value, onChange, $evt, $name]);
 
   return (
     <div className="input-group input-group-sm mb-3">
@@ -214,19 +236,20 @@ export interface IInputGroupWithCheckbox {
   inputLabel: string;
   checkboxLabel?: string;
   inputValue?: string;
-  inputName?: string;
+  inputName: string;
   inputProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
   // Checkbox
-  checkboxName?: string;
+  checkboxName: string;
   checkboxValue?: boolean;
   checkboxProps?: DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >;
   onChange?: (
+    name: string,
     value: string | boolean,
     evt?: ChangeEvent<HTMLInputElement>
   ) => void;
@@ -249,10 +272,10 @@ export const InputGroupWithCheckbox = ({
         target: { checked },
       } = evt;
       if (typeof onChange === "function") {
-        onChange(checked, evt);
+        onChange(checkboxName, checked, evt);
       }
     },
-    [onChange]
+    [checkboxName, onChange]
   );
   return (
     <InputGroup
