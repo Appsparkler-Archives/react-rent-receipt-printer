@@ -250,7 +250,7 @@ export interface IInputGroupWithSelect {
     HTMLSelectElement
   >;
 
-  onChange?: CustomChangeEventHandler;
+  onChange?: CustomChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
 }
 
 export const InputGroupWithSelect = ({
@@ -275,7 +275,7 @@ export const InputGroupWithSelect = ({
     $name1?: string;
     $name2?: string;
     $name: string;
-    $evt?: ChangeEvent<HTMLInputElement>;
+    $evt?: ChangeEvent<HTMLSelectElement | HTMLInputElement>;
   }>({
     $value1: inputValue,
     $value2: selectValue,
@@ -298,7 +298,7 @@ export const InputGroupWithSelect = ({
           $value: value,
           $name1: name,
           $name: name,
-          $evt: evt,
+          $evt: evt as ChangeEvent<HTMLInputElement>,
         }));
       }
     },
@@ -317,7 +317,7 @@ export const InputGroupWithSelect = ({
           $value: value,
           $name2: name,
           $name: name,
-          // $evt: evt,
+          $evt: evt as ChangeEvent<HTMLSelectElement>,
         }));
       }
     },
@@ -361,7 +361,10 @@ export const InputGroupWithSelect = ({
               {label}
             </option>
           ),
-          [{ label: "1", value: "1" }]
+          [
+            { label: "1", value: "1" },
+            { label: "2", value: "2" },
+          ]
         )}
       </select>
     </div>
