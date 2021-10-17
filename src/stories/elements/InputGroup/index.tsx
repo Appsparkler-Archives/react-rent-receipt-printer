@@ -1,3 +1,4 @@
+import map from "lodash/fp/map";
 import {
   useState,
   useEffect,
@@ -9,6 +10,7 @@ import {
   ChangeEventHandler,
   ChangeEvent,
   TextareaHTMLAttributes,
+  SelectHTMLAttributes,
 } from "react";
 
 export type AllowedInputTypes = Exclude<
@@ -226,6 +228,142 @@ export const DoubleInputGroup = ({
         onChange={handleChange2}
         {...inputProps2}
       />
+    </div>
+  );
+};
+
+export interface IInputGroupWithSelect {
+  label1: string;
+  value1?: string;
+  type1?: AllowedInputTypes;
+  name1?: string;
+  inputProps1?: DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >;
+
+  label2: string;
+  value2?: string;
+  name2?: string;
+  selectProps?: DetailedHTMLProps<
+    SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  >;
+
+  onChange?: CustomChangeEventHandler;
+}
+
+export const InputGroupWithSelect = ({
+  inputProps1,
+  label1,
+  type1,
+  name1,
+  value1,
+  selectProps,
+  label2,
+  name2,
+  value2,
+  onChange,
+}: IInputGroupWithSelect) => {
+  const [
+    { $value1, $value2, $value, $evt, $name, $name1, $name2 },
+    setState,
+  ] = useState<{
+    $value1?: string;
+    $value2?: string;
+    $value: string;
+    $name1?: string;
+    $name2?: string;
+    $name: string;
+    $evt?: ChangeEvent<HTMLInputElement>;
+  }>({
+    $value1: value1,
+    $value2: value2,
+    $value: "",
+    $evt: undefined,
+    $name: "",
+    $name1: name1,
+    $name2: name2,
+  });
+
+  const handleChange1 = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (evt) => {
+      const {
+        target: { value, name },
+      } = evt;
+      if (typeof value === "string") {
+        setState((prevState) => ({
+          ...prevState,
+          $value1: value,
+          $value: value,
+          $name1: name,
+          $name: name,
+          $evt: evt,
+        }));
+      }
+    },
+    []
+  );
+
+  const handleChange2 = useCallback<ChangeEventHandler<HTMLSelectElement>>(
+    (evt) => {
+      const {
+        target: { value, name },
+      } = evt;
+      if (typeof value === "string") {
+        setState((prevState) => ({
+          ...prevState,
+          $value2: value,
+          $value: value,
+          $name2: name,
+          $name: name,
+          // $evt: evt,
+        }));
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (Boolean($value) && typeof onChange === "function" && Boolean($name)) {
+      onChange($name, $value, $evt);
+    }
+  }, [$value, onChange, $evt, $name]);
+
+  return (
+    <div className="input-group input-group-sm mb-3">
+      {/* INPUT 1 */}
+      <span className="input-group-text" id="inputGroup-sizing-sm">
+        {label1}
+      </span>
+      <input
+        type={type1}
+        name={$name1}
+        className="form-control"
+        value={$value1}
+        onChange={handleChange1}
+        {...inputProps1}
+      />
+      {/* INPUT 2 */}
+      <span className="input-group-text" id="inputGroup-sizing-sm">
+        {label2}
+      </span>
+      <select
+        name={$name2}
+        className="form-control"
+        value={$value2}
+        onChange={handleChange2}
+        {...selectProps}
+      >
+        {map<{ label: string; value: string }, ReactNode>(
+          ({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ),
+          [{ label: "1", value: "1" }]
+        )}
+      </select>
     </div>
   );
 };
