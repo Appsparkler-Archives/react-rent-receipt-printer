@@ -6,6 +6,7 @@ import {
   InputGroupWithCheckbox,
   TextAreaGroup,
 } from "../elements/InputGroup";
+import { filter, map } from "../logic/lodash";
 
 export interface ReceiptFormData {
   tenantName: string;
@@ -181,23 +182,22 @@ export const RentReceiptFormWithValidation = ({
         onClickShare={onClickShare}
       />
       {validationMessages.length > 0 && (
-        <div
-          className="alert alert-warning alert-dismissible fade show my-2"
-          role="alert"
-        >
-          {validationMessages.map((validationMessage, idx) => (
-            <p className="p-0 m-0" key={`validaiton-messages-${idx}`}>
-              {validationMessage}
-            </p>
-          ))}
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
+        <div className="alert alert-warning show my-2" role="alert">
+          <ul>
+            {validationMessages.map((validationMessage) => (
+              <li
+                className="p-0 m-0"
+                key={`validaiton-messages-${validationMessage}`}
+              >
+                {validationMessage}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
+      <pre className="pre-scrollable">
+        {JSON.stringify(validationMessages, null, 2)}
+      </pre>
     </div>
   );
 };
@@ -228,20 +228,26 @@ const validateFormData = ({
         ]
       : [];
 
-  const isRequiredErrors = [
+  const fieldsAndLabels = [
     { label: "Address", field: address },
     { label: "Rent Amount", field: rentAmount },
     { label: "Tenant's Name", field: tenantName },
-    { label: "From Date", field: tenantName },
-    { label: "To Date", field: tenantName },
+    { label: "From Date", field: fromDate },
+    { label: "To Date", field: toDate },
     { label: "Landlord's Name", field: landlordName },
     { label: "Landlord's PAN#", field: landlordPan },
-  ].map(({ label, field }) =>
-    Boolean(field)
-      ? []
-      : [<RequiredValidationMessage key={label} label={label} />]
-  );
+  ];
 
+  const mappedFieldAndLabels = map(
+    ({ label, field }) =>
+      Boolean(field) ? (
+        false
+      ) : (
+        <RequiredValidationMessage key={label} label={label} />
+      ),
+    fieldsAndLabels
+  );
+  const isRequiredErrors = filter((res) => Boolean(res), mappedFieldAndLabels);
   const errors = [...toBeforeFromError, ...isRequiredErrors];
   return errors;
 };
