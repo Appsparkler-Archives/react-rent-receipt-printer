@@ -8,6 +8,7 @@ import {
   ReactNode,
   ChangeEventHandler,
   ChangeEvent,
+  TextareaHTMLAttributes,
 } from "react";
 
 export type AllowedInputTypes = Exclude<
@@ -276,5 +277,75 @@ export const InputGroupWithCheckbox = ({
         </label>
       </div>
     </InputGroup>
+  );
+};
+
+export interface ITextareaGroupProps {
+  label: string;
+  name: string;
+  textareaProps?: DetailedHTMLProps<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  >;
+  rows?: number;
+  value?: string;
+  onChange?: (
+    name: string,
+    value: string,
+    evt?: ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+}
+
+export const TextAreaGroup = ({
+  textareaProps,
+  label,
+  name,
+  value,
+  rows = 3,
+  onChange,
+}: ITextareaGroupProps) => {
+  const [{ $value, $evt }, setState] = useState<{
+    $value?: string;
+    $evt?: ChangeEvent<HTMLTextAreaElement>;
+  }>({
+    $value: value,
+    $evt: undefined,
+  });
+  const handleChange = useCallback<ChangeEventHandler<HTMLTextAreaElement>>(
+    (evt) => {
+      const {
+        target: { value },
+      } = evt;
+      if (typeof value === "string") {
+        setState((prevState) => ({
+          ...prevState,
+          $value: value,
+          $evt: evt,
+        }));
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (typeof $value === "string" && typeof onChange === "function") {
+      onChange(name, $value, $evt);
+    }
+  }, [$value, onChange, $evt, name]);
+
+  return (
+    <div className="input-group input-group-sm mb-3">
+      <span className="input-group-text" id="inputGroup-sizing-sm">
+        {label}
+      </span>
+      <textarea
+        name={name}
+        className="form-control"
+        value={$value}
+        onChange={handleChange}
+        rows={rows}
+        {...textareaProps}
+      />
+    </div>
   );
 };
