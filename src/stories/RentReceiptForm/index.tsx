@@ -71,6 +71,7 @@ export const RentReceiptForm = ({
   const handleClickPrint = useCallback(() => {
     onClickPrint(state);
   }, [onClickPrint, state]);
+
   return (
     <div>
       <h3 className="text-center h3">Rent Receipt Printer</h3>
@@ -147,4 +148,57 @@ export const RentReceiptForm = ({
       </form>
     </div>
   );
+};
+
+export const RentReceiptFormWithValidation = ({
+  onClickPrint,
+  onClickShare,
+}: IRentReceiptForm) => {
+  const [{ validationMessages }, setState] = useState<{
+    validationMessages: string[];
+  }>({
+    validationMessages: [],
+  });
+  const handleOnClickPrint = useCallback((formData: ReceiptFormData) => {
+    const validationMessages = validateFormData(formData);
+    setState((prevState) => ({
+      ...prevState,
+      validationMessages,
+    }));
+  }, []);
+
+  return (
+    <div>
+      <RentReceiptForm
+        onClickPrint={handleOnClickPrint}
+        onClickShare={onClickShare}
+      />
+      {validationMessages.length > 0 && (
+        <div
+          className="alert alert-warning alert-dismissible fade show my-2"
+          role="alert"
+        >
+          {validationMessages.map((validationMessage) => (
+            <p className="p-0 m-0" key={validationMessage}>
+              {validationMessage}
+            </p>
+          ))}
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const validateFormData = ({ tenantName }: ReceiptFormData): string[] => {
+  const tenantNameIsRequiredError = Boolean(tenantName)
+    ? []
+    : ["Tenant's name is required"];
+  const errors = [...tenantNameIsRequiredError];
+  return errors;
 };
