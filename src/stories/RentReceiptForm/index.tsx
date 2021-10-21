@@ -182,7 +182,7 @@ export const RentReceiptFormWithValidation = ({
         onClickShare={onClickShare}
       />
       {validationMessages.length > 0 && (
-        <div className="alert alert-warning show my-2" role="alert">
+        <div className="alert alert-warning show my-2 p-0" role="alert">
           <ul>
             {validationMessages.map((validationMessage) => (
               <li
