@@ -7,6 +7,7 @@ export interface IRentReceiptProps {
   amount: string;
   tenantName: string;
   address: string;
+  month: string;
   fromDt: string;
   toDt: string;
   landlordName: string;
@@ -21,6 +22,7 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
   amount,
   tenantName,
   address,
+  month,
   fromDt,
   toDt,
   landlordName,
@@ -30,7 +32,7 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
   const { receiptNumber, wrapperClasses } = useMemo(
     () => ({
       receiptNumber: uuid().substr(-12),
-      wrapperClasses: `overflow-auto d-print-block ${
+      wrapperClasses: `overflow-auto d-print-block my-3 ${
         printOnly ? "d-none" : ""
       }`,
     }),
@@ -45,7 +47,7 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
         <div className="d-flex justify-content-between">
           <div>
             <h2>RENT RECEIPT</h2>
-            <h6>October 2021</h6>
+            <h6>{month}</h6>
           </div>
           <div className="text-end">
             <div>

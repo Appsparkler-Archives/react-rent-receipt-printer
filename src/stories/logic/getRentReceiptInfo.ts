@@ -10,7 +10,7 @@ export interface IGetRentReciptInfo {
 
 export const getRentReceiptInfo = (
   fromDt: string,
-  numberOfMonths: number
+  numberOfMonths: string
 ): IGetRentReciptInfo[] => {
   const getFromDt = (dt: string, idx: number) =>
     moment(dt).add(idx, "months").startOf("day");
@@ -25,6 +25,6 @@ export const getRentReceiptInfo = (
         .subtract(1, "day")
         .format("DD-MMM-YYYY"),
     };
-  }, times(numberOfMonths));
+  }, times(parseInt(numberOfMonths)));
   return results;
 };
