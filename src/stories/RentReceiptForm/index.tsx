@@ -1,17 +1,18 @@
 import React, { ReactNode, useCallback, useState } from "react";
 import { SVGIcon } from "../atoms/Icon";
 import {
-  DoubleInputGroup,
   InputGroup,
   InputGroupWithCheckbox,
+  InputGroupWithSelect,
+  OptionType,
   TextAreaGroup,
 } from "../elements/InputGroup";
-import { filter, map } from "../logic/lodash";
+import { filter, map, times } from "../logic/lodash";
 
 export interface ReceiptFormData {
   tenantName: string;
   fromDate: string;
-  toDate: string;
+  noOfMonths: string;
   rentAmount: string;
   includesMaintenance: boolean;
   address: string;
@@ -24,6 +25,14 @@ export interface IRentReceiptForm {
   onClickShare: React.MouseEventHandler<HTMLButtonElement>;
 }
 
+const oneToTwelve: OptionType[] = times<OptionType>(
+  (n, x = n + 1) => ({
+    label: x,
+    value: x,
+  }),
+  12
+);
+
 export const RentReceiptForm = ({
   onClickPrint,
   onClickShare: handleClickShare,
@@ -31,7 +40,7 @@ export const RentReceiptForm = ({
   const [state, setState] = useState<ReceiptFormData>({
     tenantName: "",
     fromDate: "",
-    toDate: "",
+    noOfMonths: "12",
     rentAmount: "",
     includesMaintenance: false,
     address: "",
@@ -42,7 +51,7 @@ export const RentReceiptForm = ({
   const {
     tenantName,
     fromDate,
-    toDate,
+    noOfMonths,
     rentAmount,
     includesMaintenance,
     address,
@@ -50,24 +59,14 @@ export const RentReceiptForm = ({
     landlordPan,
   } = state;
 
-  const handleChange = useCallback(
-    (
-      name: string,
-      value: string | boolean,
-      evt?:
-        | React.ChangeEvent<HTMLInputElement>
-        | React.ChangeEvent<HTMLTextAreaElement>
-        | undefined
-    ) => {
-      if (name) {
-        setState((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
-    },
-    []
-  );
+  const handleChange = useCallback((name: string, value: string | boolean) => {
+    if (name) {
+      setState((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+  }, []);
 
   const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
     (evt) => {
@@ -93,16 +92,15 @@ export const RentReceiptForm = ({
           }}
         />
 
-        {/* From & To */}
-        <DoubleInputGroup
-          type1="date"
-          label1="From"
-          name1="fromDate"
-          value1={fromDate}
-          label2="To"
-          type2="date"
-          name2="toDate"
-          value2={toDate}
+        <InputGroupWithSelect
+          inputLabel="From"
+          inputName="fromDate"
+          inputValue={fromDate}
+          inputType="date"
+          options={oneToTwelve}
+          selectLabel="# of months"
+          selectName="noOfMonths"
+          selectValue={noOfMonths}
           onChange={handleChange}
         />
 
@@ -167,13 +165,17 @@ export const RentReceiptFormWithValidation = ({
   }>({
     validationMessages: [],
   });
-  const handleOnClickPrint = useCallback((formData: ReceiptFormData) => {
-    const validationMessages = validateFormData(formData);
-    setState((prevState) => ({
-      ...prevState,
-      validationMessages,
-    }));
-  }, []);
+  const handleOnClickPrint = useCallback(
+    (formData: ReceiptFormData) => {
+      const validationMessages = validateFormData(formData);
+      setState((prevState) => ({
+        ...prevState,
+        validationMessages,
+      }));
+      if (validationMessages.length === 0) onClickPrint(formData);
+    },
+    [onClickPrint]
+  );
 
   return (
     <div>
@@ -215,25 +217,12 @@ const validateFormData = ({
   landlordName,
   landlordPan,
   fromDate,
-  toDate,
 }: ReceiptFormData): ReactNode[] => {
-  const toBeforeFromError =
-    Boolean(fromDate) &&
-    Boolean(toDate) &&
-    new Date(fromDate) > new Date(toDate)
-      ? [
-          <>
-            <strong>From Date</strong> should be before <strong>To date</strong>
-          </>,
-        ]
-      : [];
-
   const fieldsAndLabels = [
     { label: "Address", field: address },
     { label: "Rent Amount", field: rentAmount },
     { label: "Tenant's Name", field: tenantName },
     { label: "From Date", field: fromDate },
-    { label: "To Date", field: toDate },
     { label: "Landlord's Name", field: landlordName },
     { label: "Landlord's PAN#", field: landlordPan },
   ];
@@ -248,6 +237,6 @@ const validateFormData = ({
     fieldsAndLabels
   );
   const isRequiredErrors = filter((res) => Boolean(res), mappedFieldAndLabels);
-  const errors = [...toBeforeFromError, ...isRequiredErrors];
+  const errors = [...isRequiredErrors];
   return errors;
 };
