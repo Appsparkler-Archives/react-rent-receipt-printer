@@ -29,7 +29,10 @@ WithAllProps.args = {
     California, America - 20039
    `,
   printOnly: false,
+  includesMaintenance: true,
 } as IRentReceiptProps;
+
+// export const
 
 export const multipleReceipts = () => {
   const formData: ReceiptFormData = {

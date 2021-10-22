@@ -21,6 +21,7 @@ export interface ReceiptFormData {
 }
 
 export interface IRentReceiptForm {
+  btnRef?: React.LegacyRef<HTMLButtonElement> | undefined;
   onClickPrint: (formData: ReceiptFormData) => void;
   onClickShare: React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -36,6 +37,7 @@ const oneToTwelve: OptionType[] = times<OptionType>(
 export const RentReceiptForm = ({
   onClickPrint,
   onClickShare: handleClickShare,
+  btnRef,
 }: IRentReceiptForm) => {
   const [state, setState] = useState<ReceiptFormData>({
     tenantName: "",
@@ -144,6 +146,7 @@ export const RentReceiptForm = ({
             <SVGIcon type="printer-fill" />
           </button>
           <button
+            ref={btnRef}
             type="button"
             className="btn btn-success rounded-0 d-print-none mx-2 d-inline-flex"
             onClick={handleClickShare}
@@ -159,6 +162,7 @@ export const RentReceiptForm = ({
 export const RentReceiptFormWithValidation = ({
   onClickPrint,
   onClickShare,
+  btnRef,
 }: IRentReceiptForm) => {
   const [{ validationMessages }, setState] = useState<{
     validationMessages: ReactNode[];
@@ -182,6 +186,7 @@ export const RentReceiptFormWithValidation = ({
       <RentReceiptForm
         onClickPrint={handleOnClickPrint}
         onClickShare={onClickShare}
+        btnRef={btnRef}
       />
       {validationMessages.length > 0 && (
         <div className="alert alert-warning show my-2 p-0" role="alert">

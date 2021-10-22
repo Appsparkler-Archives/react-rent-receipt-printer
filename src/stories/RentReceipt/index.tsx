@@ -14,6 +14,7 @@ export interface IRentReceiptProps {
   panNo: string;
   printOnly: boolean;
   pageBreakAfter: boolean;
+  includesMaintenance: boolean;
 }
 
 /**
@@ -30,6 +31,7 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
   panNo,
   printOnly,
   pageBreakAfter,
+  includesMaintenance,
 }) => {
   const { receiptNumber, wrapperClasses } = useMemo(
     () => ({
@@ -60,9 +62,10 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
         </div>
         <div className="my-4">
           Received sum of <Strong t={`₹ ${amount} `} />
-          from <Strong t={tenantName} /> towards the rent {i} of property
-          located at <Strong t={address} /> for the period from{" "}
-          <Strong t={fromDt} /> to <Strong t={toDt} />.
+          from <Strong t={tenantName} /> towards the rent{" "}
+          {includesMaintenance ? "and maintenance" : ""} of property located at{" "}
+          <Strong t={address} /> for the period from <Strong t={fromDt} /> to{" "}
+          <Strong t={toDt} />.
         </div>
         <div className="mb-4">
           <strong>{landlordName} (Landlord)</strong>
