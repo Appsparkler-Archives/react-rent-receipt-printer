@@ -1,3 +1,4 @@
+import { BootstrapScreenSizeElement } from '../src/components/BootstrapScreenSizeElement'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.esm"
 
@@ -10,3 +11,10 @@ export const parameters = {
     },
   },
 }
+
+export const decorators = [
+  (Story) => <div>
+    <BootstrapScreenSizeElement />
+    <Story />
+  </div>
+]
