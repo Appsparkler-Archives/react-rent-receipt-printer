@@ -3,6 +3,8 @@ import { v4 as uuid } from "uuid";
 
 export const Strong = ({ t }: { t: string }) => <strong>{t}</strong>;
 
+const width = "99%";
+
 export interface IRentReceiptProps {
   amount: string;
   tenantName: string;
@@ -32,8 +34,8 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
   const { receiptNumber, wrapperClasses } = useMemo(
     () => ({
       receiptNumber: uuid().substr(-12),
-      wrapperClasses: `overflow-auto d-print-block my-3 ${
-        printOnly ? "d-none" : ""
+      wrapperClasses: `overflow-auto d-print-block my-3 page-break-avoid ${
+        printOnly ? "" : ""
       }`,
     }),
     [printOnly]
@@ -41,8 +43,8 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
   return (
     <div className={wrapperClasses}>
       <div
-        className="border-2 border p-2 border-secondary"
-        style={{ width: 700 }}
+        className="border-2 border p-2 m-1 border-secondary"
+        style={{ maxWidth: width, width, minWidth: width }}
       >
         <div className="d-flex justify-content-between">
           <div>

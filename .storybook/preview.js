@@ -1,5 +1,6 @@
 import { BootstrapScreenSizeElement } from '../src/components/BootstrapScreenSizeElement'
 import "bootstrap/dist/css/bootstrap.min.css";
+import './styles.css'
 import "bootstrap/dist/js/bootstrap.esm"
 
 export const parameters = {

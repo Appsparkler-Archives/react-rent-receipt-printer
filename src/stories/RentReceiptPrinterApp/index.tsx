@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { IRentReceiptProps } from "../RentReceipt";
 import {
   ReceiptFormData,
@@ -6,7 +6,7 @@ import {
 } from "../RentReceiptForm";
 import { map } from "../logic/lodash";
 import { getRentReceiptInfo } from "../logic/getRentReceiptInfo";
-import { RentReceipt } from "../../components/RentReceipt";
+import { RentReceipt } from "../RentReceipt";
 
 export const RentReceiptPrinterApp = () => {
   const [{ rentReceiptFormData }, setState] = useState<{
@@ -22,7 +22,6 @@ export const RentReceiptPrinterApp = () => {
       ...prevState,
       rentReceiptFormData: formData,
     }));
-    window.print();
   }, []);
 
   const handleClickShare = useCallback(() => {}, []);
@@ -48,13 +47,17 @@ export const RentReceiptPrinterApp = () => {
             month: rentReceiptInfo.month,
             landlordName: rentReceiptFormData.landlordName,
             panNo: rentReceiptFormData.landlordPan,
-            printOnly: true,
+            printOnly: false,
             tenantName: rentReceiptFormData.tenantName,
           };
           return <RentReceipt {...rentReceiptProps} />;
         }, parsedRentReceiptInfo)
       : null;
   }, [parsedRentReceiptInfo, rentReceiptFormData]);
+
+  useEffect(() => {
+    rentReceipts && window.print();
+  }, [rentReceipts]);
 
   return (
     <div>
