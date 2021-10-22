@@ -178,7 +178,7 @@ export const RentReceiptFormWithValidation = ({
   );
 
   return (
-    <div>
+    <div className="d-print-none">
       <RentReceiptForm
         onClickPrint={handleOnClickPrint}
         onClickShare={onClickShare}
@@ -197,9 +197,6 @@ export const RentReceiptFormWithValidation = ({
           </ul>
         </div>
       )}
-      <pre className="pre-scrollable">
-        {JSON.stringify(validationMessages, null, 2)}
-      </pre>
     </div>
   );
 };

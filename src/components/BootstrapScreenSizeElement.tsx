@@ -12,7 +12,7 @@ const getBoxClasses = (variant: EnumBootstrapVariants) =>
   `p-2 bg-${variant} d-inline-flex text-white bottom-0 end-0 position-fixed text-strong fw-bold`;
 
 export const BootstrapScreenSizeElement = () => (
-  <div>
+  <div className="d-print-none">
     <div
       className={`d-block d-sm-none ${getBoxClasses(
         EnumBootstrapVariants.primary
