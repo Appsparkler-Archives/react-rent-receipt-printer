@@ -36,9 +36,9 @@ export const RentReceipt: React.FC<IRentReceiptProps> = ({
   const { receiptNumber, wrapperClasses } = useMemo(
     () => ({
       receiptNumber: uuid().substr(-12),
-      wrapperClasses: `overflow-auto d-print-block my-3 ${
+      wrapperClasses: `overflow-auto d-print-block mt-2 ${
         pageBreakAfter ? "page-break-after" : ""
-      } ${printOnly ? "" : ""}`,
+      } ${printOnly ? "d-none" : ""}`.trim(),
     }),
     [pageBreakAfter, printOnly]
   );

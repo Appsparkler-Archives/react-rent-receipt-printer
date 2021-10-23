@@ -1,5 +1,4 @@
-import React, { ReactNode, useCallback, useState } from "react";
-import { SVGIcon } from "../atoms/Icon";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import {
   InputGroup,
   InputGroupWithCheckbox,
@@ -22,8 +21,7 @@ export interface ReceiptFormData {
 
 export interface IRentReceiptForm {
   btnRef?: React.LegacyRef<HTMLButtonElement> | undefined;
-  onClickPrint: (formData: ReceiptFormData) => void;
-  onClickShare: React.MouseEventHandler<HTMLButtonElement>;
+  onChange: (formData: ReceiptFormData) => void;
 }
 
 const oneToTwelve: OptionType[] = times<OptionType>(
@@ -34,11 +32,7 @@ const oneToTwelve: OptionType[] = times<OptionType>(
   12
 );
 
-export const RentReceiptForm = ({
-  onClickPrint,
-  onClickShare: handleClickShare,
-  btnRef,
-}: IRentReceiptForm) => {
+export const RentReceiptForm = ({ btnRef, onChange }: IRentReceiptForm) => {
   const [state, setState] = useState<ReceiptFormData>({
     tenantName: "",
     fromDate: "",
@@ -70,19 +64,14 @@ export const RentReceiptForm = ({
     }
   }, []);
 
-  const handleSubmit = useCallback<React.FormEventHandler<HTMLFormElement>>(
-    (evt) => {
-      evt.stopPropagation();
-      evt.preventDefault();
-      onClickPrint(state);
-    },
-    [onClickPrint, state]
-  );
+  useEffect(() => {
+    onChange(state);
+  }, [state, onChange]);
 
   return (
     <div>
       <h3 className="text-center h3">Rent Receipt Printer</h3>
-      <form noValidate onSubmit={handleSubmit}>
+      <form noValidate>
         <InputGroup
           type="text"
           label="Tenant's Name"
@@ -138,31 +127,14 @@ export const RentReceiptForm = ({
           value={landlordPan}
           onChange={handleChange}
         />
-        <div className="flex-row">
-          <button
-            type="submit"
-            className="btn btn-primary rounded-0 d-print-none d-inline-flex"
-          >
-            <SVGIcon type="printer-fill" />
-          </button>
-          <button
-            ref={btnRef}
-            type="button"
-            className="btn btn-success rounded-0 d-print-none mx-2 d-inline-flex"
-            onClick={handleClickShare}
-          >
-            <SVGIcon type="share-fill" />
-          </button>
-        </div>
       </form>
     </div>
   );
 };
 
 export const RentReceiptFormWithValidation = ({
-  onClickPrint,
-  onClickShare,
   btnRef,
+  onChange,
 }: IRentReceiptForm) => {
   const [{ validationMessages }, setState] = useState<{
     validationMessages: ReactNode[];
@@ -176,18 +148,14 @@ export const RentReceiptFormWithValidation = ({
         ...prevState,
         validationMessages,
       }));
-      if (validationMessages.length === 0) onClickPrint(formData);
+      if (validationMessages.length === 0) onChange(formData);
     },
-    [onClickPrint]
+    [onChange]
   );
 
   return (
     <div className="d-print-none">
-      <RentReceiptForm
-        onClickPrint={handleOnClickPrint}
-        onClickShare={onClickShare}
-        btnRef={btnRef}
-      />
+      <RentReceiptForm onChange={handleOnClickPrint} btnRef={btnRef} />
       {validationMessages.length > 0 && (
         <div className="alert alert-warning show my-2 p-0" role="alert">
           <ul>

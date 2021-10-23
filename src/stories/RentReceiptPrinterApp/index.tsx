@@ -26,8 +26,6 @@ export const RentReceiptPrinterApp = () => {
     btnRef.current?.scrollIntoView();
   }, []);
 
-  const handleClickShare = useCallback(() => {}, []);
-
   const parsedRentReceiptInfo = useMemo(
     () =>
       rentReceiptFormData &&
@@ -49,7 +47,7 @@ export const RentReceiptPrinterApp = () => {
             tenantName: rentReceiptFormData.tenantName,
             pageBreakAfter:
               (idx + 1) % 3 === 0 && parsedRentReceiptInfo.length - idx > 3,
-            printOnly: false,
+            printOnly: true,
             toDt: rentReceiptInfo.toDt,
             month: rentReceiptInfo.month,
             panNo: rentReceiptFormData.landlordPan,
@@ -70,10 +68,7 @@ export const RentReceiptPrinterApp = () => {
 
   return (
     <div>
-      <RentReceiptFormWithValidation
-        onClickPrint={handleClickPrint}
-        onClickShare={handleClickShare}
-      />
+      <RentReceiptFormWithValidation onChange={handleClickPrint} />
       <button
         className="btn btn-success d-print-none"
         ref={btnRef}
@@ -82,6 +77,7 @@ export const RentReceiptPrinterApp = () => {
         Print
       </button>
       {rentReceipts}
+      <div className="page-break-after-avoid"></div>
     </div>
   );
 };
