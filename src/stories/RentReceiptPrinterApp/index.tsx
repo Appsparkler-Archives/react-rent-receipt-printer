@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { IRentReceiptProps } from "../RentReceipt";
 import {
   ReceiptFormData,
@@ -6,10 +6,9 @@ import {
 } from "../RentReceiptForm";
 import { getRentReceiptInfo } from "../logic/getRentReceiptInfo";
 import { RentReceipt } from "../RentReceipt";
+import { SVGIcon } from "../atoms/Icon";
 
 export const RentReceiptPrinterApp = () => {
-  const btnRef: React.LegacyRef<HTMLButtonElement> | undefined = useRef(null);
-
   const [{ rentReceiptFormData }, setState] = useState<{
     rentReceiptsInfo?: IRentReceiptProps;
     rentReceiptFormData?: ReceiptFormData;
@@ -18,12 +17,11 @@ export const RentReceiptPrinterApp = () => {
     rentReceiptFormData: undefined,
   });
 
-  const handleClickPrint = useCallback((formData: ReceiptFormData) => {
+  const onChangeData = useCallback((formData: ReceiptFormData) => {
     setState((prevState) => ({
       ...prevState,
       rentReceiptFormData: formData,
     }));
-    btnRef.current?.scrollIntoView();
   }, []);
 
   const parsedRentReceiptInfo = useMemo(
@@ -58,26 +56,24 @@ export const RentReceiptPrinterApp = () => {
       : null;
   }, [parsedRentReceiptInfo, rentReceiptFormData]);
 
-  const handleClickPrint2 = useCallback(() => {
+  const handleClickPrint = useCallback(() => {
     window.print();
   }, []);
 
-  useEffect(() => {
-    rentReceipts && btnRef.current !== null && btnRef.current.scrollIntoView();
-  }, [rentReceipts]);
-
   return (
     <div>
-      <RentReceiptFormWithValidation onChange={handleClickPrint} />
+      <RentReceiptFormWithValidation onChange={onChangeData} />
       <button
         className="btn btn-success d-print-none"
-        ref={btnRef}
-        onClick={handleClickPrint2}
+        onClick={handleClickPrint}
+        disabled={!rentReceipts}
       >
-        Print
+        <span className="d-inline-flex align-items-center">
+          <SVGIcon type="printer-fill" className="me-1" />
+          Print
+        </span>
       </button>
       {rentReceipts}
-      <div className="page-break-after-avoid"></div>
     </div>
   );
 };

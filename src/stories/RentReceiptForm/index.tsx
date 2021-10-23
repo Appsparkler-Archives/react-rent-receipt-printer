@@ -20,7 +20,6 @@ export interface ReceiptFormData {
 }
 
 export interface IRentReceiptForm {
-  btnRef?: React.LegacyRef<HTMLButtonElement> | undefined;
   onChange: (formData: ReceiptFormData) => void;
 }
 
@@ -32,7 +31,7 @@ const oneToTwelve: OptionType[] = times<OptionType>(
   12
 );
 
-export const RentReceiptForm = ({ btnRef, onChange }: IRentReceiptForm) => {
+export const RentReceiptForm = ({ onChange }: IRentReceiptForm) => {
   const [state, setState] = useState<ReceiptFormData>({
     tenantName: "",
     fromDate: "",
@@ -111,6 +110,7 @@ export const RentReceiptForm = ({ btnRef, onChange }: IRentReceiptForm) => {
           name="address"
           onChange={handleChange}
           value={address}
+          rows={5}
         />
 
         <InputGroup
@@ -133,7 +133,6 @@ export const RentReceiptForm = ({ btnRef, onChange }: IRentReceiptForm) => {
 };
 
 export const RentReceiptFormWithValidation = ({
-  btnRef,
   onChange,
 }: IRentReceiptForm) => {
   const [{ validationMessages }, setState] = useState<{
@@ -155,7 +154,7 @@ export const RentReceiptFormWithValidation = ({
 
   return (
     <div className="d-print-none">
-      <RentReceiptForm onChange={handleOnClickPrint} btnRef={btnRef} />
+      <RentReceiptForm onChange={handleOnClickPrint} />
       {validationMessages.length > 0 && (
         <div className="alert alert-warning show my-2 p-0" role="alert">
           <ul>
