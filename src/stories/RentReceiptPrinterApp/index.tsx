@@ -7,6 +7,7 @@ import {
 import { getRentReceiptInfo } from "../logic/getRentReceiptInfo";
 import { RentReceipt } from "../RentReceipt";
 import { SVGIcon } from "../atoms/Icon";
+import "./styles.css";
 
 export const RentReceiptPrinterApp = () => {
   const [{ rentReceiptFormData }, setState] = useState<{
