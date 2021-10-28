@@ -10,12 +10,14 @@ import { SVGIcon } from "../atoms/Icon";
 import "./styles.css";
 
 export const RentReceiptPrinterApp = () => {
-  const [{ rentReceiptFormData }, setState] = useState<{
+  const [{ rentReceiptFormData, hasPrintFeature }, setState] = useState<{
     rentReceiptsInfo?: IRentReceiptProps;
     rentReceiptFormData?: ReceiptFormData;
+    hasPrintFeature: boolean;
   }>({
     rentReceiptsInfo: undefined,
     rentReceiptFormData: undefined,
+    hasPrintFeature: Boolean(window.print),
   });
 
   const onChangeData = useCallback((formData: ReceiptFormData) => {
@@ -60,6 +62,17 @@ export const RentReceiptPrinterApp = () => {
   const handleClickPrint = useCallback(() => {
     window.print();
   }, []);
+
+  if (!hasPrintFeature) {
+    return (
+      <div className="container my-2">
+        <div className="alert alert-warning d-flex align-items-center">
+          <SVGIcon type="exclamation-octagon-fill" className="me-2" />
+          <div>Your system doesn't have print feature.</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
