@@ -158,10 +158,10 @@ export const RentReceiptFormWithValidation = ({
       {validationMessages.length > 0 && (
         <div className="alert alert-warning show my-2 p-0" role="alert">
           <ul>
-            {validationMessages.map((validationMessage) => (
+            {validationMessages.map((validationMessage, idx) => (
               <li
                 className="p-0 m-0"
-                key={`validaiton-messages-${validationMessage}`}
+                key={`validaiton-messages-${validationMessage}-${idx}`}
               >
                 {validationMessage}
               </li>

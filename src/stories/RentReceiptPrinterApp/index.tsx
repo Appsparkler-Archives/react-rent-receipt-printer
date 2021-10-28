@@ -62,19 +62,25 @@ export const RentReceiptPrinterApp = () => {
   }, []);
 
   return (
-    <div>
-      <RentReceiptFormWithValidation onChange={onChangeData} />
-      <button
-        className="btn btn-success d-print-none"
-        onClick={handleClickPrint}
-        disabled={!rentReceipts}
-      >
-        <span className="d-inline-flex align-items-center">
-          <SVGIcon type="printer-fill" className="me-1" />
-          Print
-        </span>
-      </button>
+    <>
+      <div className="container">
+        <div className="row  justify-content-center">
+          <div className="col-12 col-md-8 col-lg-6 col-xl-4 col-xxl-3">
+            <RentReceiptFormWithValidation onChange={onChangeData} />
+            <button
+              className="btn btn-success d-print-none"
+              onClick={handleClickPrint}
+              disabled={!rentReceipts}
+            >
+              <span className="d-inline-flex align-items-center">
+                <SVGIcon type="printer-fill" className="me-1" />
+                Print
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
       {rentReceipts}
-    </div>
+    </>
   );
 };
