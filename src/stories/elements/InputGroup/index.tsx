@@ -12,6 +12,9 @@ import {
   TextareaHTMLAttributes,
   SelectHTMLAttributes,
 } from "react";
+import ReactDayPickerInput from "react-day-picker/DayPickerInput";
+import RDPMomentUtils from "react-day-picker/moment";
+import "react-day-picker/lib/style.css";
 
 export type AllowedInputTypes = Exclude<
   HTMLInputTypeAttribute,
@@ -501,6 +504,27 @@ export const TextAreaGroup = ({
         onChange={handleChange}
         rows={rows}
         {...textareaProps}
+      />
+    </div>
+  );
+};
+
+export interface IDayPickerInputProps {}
+
+export const DayPickerInput = (props: IDayPickerInputProps) => {
+  return (
+    <div className="input-group input-group-sm mb-3">
+      <span className="input-group-text" id="inputGroup-sizing-sm">
+        From Date
+      </span>
+      <ReactDayPickerInput
+        inputProps={{
+          className: "form-control",
+        }}
+        formatDate={RDPMomentUtils.formatDate}
+        parseDate={RDPMomentUtils.parseDate}
+        format="DD/MM/YYYY"
+        placeholder="DD/MM/YYYY"
       />
     </div>
   );
