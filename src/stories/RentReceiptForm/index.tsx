@@ -79,6 +79,7 @@ export const RentReceiptForm = ({ onChange }: IRentReceiptForm) => {
           onChange={handleChange}
           inputProps={{
             required: true,
+            "aria-label": "Tenant's Name",
           }}
         />
 
@@ -90,6 +91,9 @@ export const RentReceiptForm = ({ onChange }: IRentReceiptForm) => {
           options={oneToTwelve}
           selectLabel="# of months"
           selectName="noOfMonths"
+          inputProps={{
+            "aria-label": "Type in From Date",
+          }}
           selectValue={noOfMonths}
           onChange={handleChange}
         />
