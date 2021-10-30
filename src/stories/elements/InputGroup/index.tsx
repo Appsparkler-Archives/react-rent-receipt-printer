@@ -11,6 +11,8 @@ import {
   ChangeEvent,
   TextareaHTMLAttributes,
   SelectHTMLAttributes,
+  useRef,
+  LegacyRef,
 } from "react";
 import ReactDayPickerInput from "react-day-picker/DayPickerInput";
 import RDPMomentUtils from "react-day-picker/moment";
@@ -512,6 +514,7 @@ export const TextAreaGroup = ({
 export interface IDayPickerInputProps {}
 
 export const DayPickerInput = (props: IDayPickerInputProps) => {
+  const ref: LegacyRef<ReactDayPickerInput> = useRef(null);
   return (
     <div className="input-group input-group-sm mb-3">
       <span className="input-group-text" id="inputGroup-sizing-sm">
@@ -521,11 +524,29 @@ export const DayPickerInput = (props: IDayPickerInputProps) => {
         inputProps={{
           className: "form-control",
         }}
+        onDayChange={console.log}
         formatDate={RDPMomentUtils.formatDate}
         parseDate={RDPMomentUtils.parseDate}
         format="DD/MM/YYYY"
-        placeholder="DD/MM/YYYY"
+        placeholder="dd/mm/yyyy"
+        ref={ref}
       />
+      <button
+        onClick={() => ref.current?.showDayPicker()}
+        className="btn btn-secondary"
+        aria-label="Show From Date Picker"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-calendar-fill"
+          viewBox="0 0 16 16"
+        >
+          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z" />
+        </svg>
+      </button>
     </div>
   );
 };
