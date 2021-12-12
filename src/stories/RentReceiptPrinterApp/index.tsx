@@ -43,13 +43,13 @@ export const RentReceiptPrinterApp = () => {
           const rentReceiptProps: IRentReceiptProps = {
             address: rentReceiptFormData.address,
             amount: rentReceiptFormData.rentAmount,
-            fromDt: rentReceiptFormData.fromDate,
             landlordName: rentReceiptFormData.landlordName,
             tenantName: rentReceiptFormData.tenantName,
             pageBreakAfter:
               (idx + 1) % 3 === 0 && parsedRentReceiptInfo.length - idx > 3,
             printOnly: true,
             toDt: rentReceiptInfo.toDt,
+            fromDt: rentReceiptInfo.fromDt,
             month: rentReceiptInfo.month,
             panNo: rentReceiptFormData.landlordPan,
             includesMaintenance: rentReceiptFormData.includesMaintenance,
