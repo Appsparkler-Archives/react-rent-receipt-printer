@@ -100,6 +100,7 @@ export const RentReceiptForm = ({ onChange }: IRentReceiptForm) => {
 
         {/* Amount & includes-maintenance-checkbox */}
         <InputGroupWithCheckbox
+          inputProps={{ type: "number" }}
           inputLabel="Amount"
           inputName="rentAmount"
           inputValue={rentAmount}
@@ -163,10 +164,7 @@ export const RentReceiptFormWithValidation = ({
         <div className="alert alert-warning show my-2 p-0" role="alert">
           <ul>
             {validationMessages.map((validationMessage, idx) => (
-              <li
-                className="p-0 m-0"
-                key={`validaiton-messages-${validationMessage}-$`}
-              >
+              <li className="p-0 m-0" key={`validaiton-messages-${idx}`}>
                 {validationMessage}
               </li>
             ))}

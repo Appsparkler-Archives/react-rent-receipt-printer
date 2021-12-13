@@ -42,7 +42,7 @@ export const RentReceiptPrinterApp = () => {
       ? parsedRentReceiptInfo.map((rentReceiptInfo, idx) => {
           const rentReceiptProps: IRentReceiptProps = {
             address: rentReceiptFormData.address,
-            amount: rentReceiptFormData.rentAmount,
+            amount: Number(rentReceiptFormData.rentAmount).toLocaleString(),
             landlordName: rentReceiptFormData.landlordName,
             tenantName: rentReceiptFormData.tenantName,
             pageBreakAfter:
@@ -54,7 +54,9 @@ export const RentReceiptPrinterApp = () => {
             panNo: rentReceiptFormData.landlordPan,
             includesMaintenance: rentReceiptFormData.includesMaintenance,
           };
-          return <RentReceipt {...rentReceiptProps} />;
+          return (
+            <RentReceipt key={rentReceiptInfo.month} {...rentReceiptProps} />
+          );
         })
       : null;
   }, [parsedRentReceiptInfo, rentReceiptFormData]);
